@@ -23,10 +23,10 @@ namespace SacramentPlanner.Models
 
         [Required]
         [Display(Name = "Opening Hymn")]
-        public Speaker OpeningPrayer { get; set; }
+        public Member OpeningPrayer { get; set; }
         [Required]
         [Display(Name = "Closing Hymn")]
-        public Speaker ClosingPrayer { get; set; }
+        public Member ClosingPrayer { get; set; }
 
         public ICollection<Speaker> Speakers { get; set; }
 
