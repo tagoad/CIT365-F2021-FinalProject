@@ -20,7 +20,7 @@ namespace SacramentPlanner.Services
         public List<Member> Get() =>
             _members.Find(member => true).ToList();
 
-        public Member Get(int id) =>
+        public Member Get(string id) =>
             _members.Find<Member>(member => member.Id == id).FirstOrDefault();
 
         public Member Create(Member member)
@@ -29,13 +29,13 @@ namespace SacramentPlanner.Services
             return member;
         }
 
-        public void Update(int id, Member memberIn) =>
+        public void Update(string id, Member memberIn) =>
             _members.ReplaceOne(member => member.Id == id, memberIn);
 
         public void Remove(Member memberIn) =>
             _members.DeleteOne(member => member.Id == memberIn.Id);
 
-        public void Remove(int id) =>
+        public void Remove(string id) =>
             _members.DeleteOne(member => member.Id == id);
     }
 }
