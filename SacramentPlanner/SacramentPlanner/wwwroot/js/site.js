@@ -3,20 +3,17 @@
 
 // Write your JavaScript code.
 $(document).ready(function () {
+    $("#myBtn3").click(function () {
+        $("#myModal3").modal();
+    });
+    $("#myBtn2").click(function () {
+        $("#myModal2").modal();
+    });
     $("#myBtn1").click(function () {
         $("#myModal1").modal();
     });
 });
-$(document).ready(function () {
-    $("#myBtn2").click(function () {
-        $("#myModal2").modal();
-    });
-});
-$(document).ready(function () {
-    $("#myBtn3").click(function () {
-        $("#myModal3").modal();
-    });
-});
+
 $(document).ready(function () {
     $("#speakers_table_button").click(function () {
         console.log("Called")
@@ -65,3 +62,10 @@ function removeSpeaker(fInput) {
     jsonInput.value = JSON.stringify(jsonObject)
     table.innerHTML = table_html
 }
+
+$('#multi1').mdbRange({
+    single: {
+        active: true
+    }
+});
+

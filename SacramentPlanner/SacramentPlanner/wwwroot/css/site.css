@@ -23,7 +23,9 @@ a {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
-
+#hymn1 .slider-selection {
+    background: #BABABA;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -133,4 +135,25 @@ body {
             background-color: inherit;
             border-top: 0 none;
         }
+}
+@media (max-width:575px) {
+    .display-4 {
+        font-size: 1.5rem;
+    }
+
+    .day h5 {
+        background-color: #f8f9fa;
+        padding: 3px 5px 5px;
+        margin: -8px -8px 8px -8px;
+    }
+
+    .date {
+        padding-left: 4px;
+    }
+}
+
+@media (min-width: 576px) {
+    .day {
+        height: 14.2857vw;
+    }
 }
