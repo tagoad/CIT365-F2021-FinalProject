@@ -92,6 +92,36 @@ namespace SacramentPlanner.Controllers
             return View(sacramentMeeting);
         }
 
+        /**
+        // POST: SacramentMeetings/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,MeetingDate,Conductor,OpeningPrayer,ClosingPrayer,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes,SpeakerString")] MeetingViewModel meetingModel)
+        {
+            var sacramentMeeting = meetingModel.Meeting;
+            var tempList = new List<Tuple<string, string>>();
+            var speakers = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(meetingModel.SpeakerString);
+            Console.WriteLine(speakers);
+            foreach (var speaker in speakers)
+            {
+                var temp = new Tuple<string, string>(speaker["memberId"], speaker["topic"]);
+                tempList.Add(temp);
+            }
+
+            sacramentMeeting.Speakers = tempList;
+
+            if (ModelState.IsValid)
+            {
+                _meetingService.Create(sacramentMeeting);
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["members"] = _memberService.Get();
+            return View(sacramentMeeting);
+        }**/
+
+
         // GET: SacramentMeetings/Edit/5
         public async Task<IActionResult> Edit(string id)
         {

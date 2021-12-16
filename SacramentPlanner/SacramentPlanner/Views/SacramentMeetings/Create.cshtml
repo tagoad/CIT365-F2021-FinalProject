@@ -79,8 +79,36 @@
                 <input asp-for="Notes" class="form-control" />
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
+            <div>
+                <table>
+                    <tbody id="speakers_table">
+                        <tr>
+                            <th>
+                                Speaker's Name
+                            </th>
+                            <th>
+                                Speakers' Topic
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <label for="speakers_table_member" class="control-label"></label>
+                    <select name="speakers_table_member" id="speakers_table_member">
+                        <option value="">Select Person</option>
+                        @foreach (var member in members)
+                        {
+                            <option value="@member.Id">@member.FullName</option>
+                        }
+                    </select>
+                    <label for="speakers_table_text" class="control-label"></label>
+                    <input type="text" name="speakers_table_text" id="speakers_table_text" />
+                    <button type="button" id="speakers_table_button">Add</button>
+                </div>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="hidden" id="speaker_string" value="" />
             </div>
         </form>
     </div>
