@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using System;
 using Microsoft.AspNetCore.Mvc;
 using SacramentPlanner.Models;
 using SacramentPlanner.Services;
+using System.Collections.Generic;
 
 namespace SacramentPlanner.Controllers
 {
@@ -19,7 +21,19 @@ namespace SacramentPlanner.Controllers
         // GET: SacramentMeetings
         public async Task<IActionResult> Index()
         {
-            return View(_meetingService.Get());
+            var meetings = _meetingService.Get();
+            var populatedMeetings = new List<Tuple<SacramentMeeting, PopulatedMembers>>();
+            foreach(var meeting in meetings)
+            {
+                var populatedMembers = new PopulatedMembers();
+                populatedMembers.Conductor = _memberService.Get(meeting.Conductor);
+                populatedMembers.OpeningPrayer = _memberService.Get(meeting.OpeningPrayer);
+                populatedMembers.ClosingPrayer = _memberService.Get(meeting.ClosingPrayer);
+                var temp = new Tuple<SacramentMeeting, PopulatedMembers>(meeting, populatedMembers);
+                populatedMeetings.Add(temp);
+            }
+
+            return View(populatedMeetings);
         }
 
         // GET: SacramentMeetings/Details/5
@@ -37,6 +51,21 @@ namespace SacramentPlanner.Controllers
                 return NotFound();
             }
 
+            var populatedMembers = new PopulatedMembers();
+            populatedMembers.Conductor = _memberService.Get(sacramentMeeting.Conductor);
+            populatedMembers.OpeningPrayer = _memberService.Get(sacramentMeeting.OpeningPrayer);
+            populatedMembers.ClosingPrayer = _memberService.Get(sacramentMeeting.ClosingPrayer);
+            if(sacramentMeeting.Speakers != null)
+            {
+                foreach (var speaker in sacramentMeeting.Speakers)
+                {
+                    var temp = new Tuple<Member, string>(_memberService.Get(speaker.Item1), speaker.Item2);
+                    populatedMembers.Speakers.Add(temp);
+                }
+            }
+
+            ViewData["populatedMembers"] = populatedMembers;
+
             return View(sacramentMeeting);
         }
 
@@ -52,7 +81,7 @@ namespace SacramentPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MeetingDate,ConductorId,OpeningPrayerId,ClosingPrayerId,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes")] SacramentMeeting sacramentMeeting)
+        public async Task<IActionResult> Create([Bind("Id,MeetingDate,Conductor,OpeningPrayer,ClosingPrayer,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes")] SacramentMeeting sacramentMeeting)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +99,8 @@ namespace SacramentPlanner.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["members"] = _memberService.Get();
 
             var sacramentMeeting = _meetingService.Get(id);
             if (sacramentMeeting == null)
@@ -112,6 +143,13 @@ namespace SacramentPlanner.Controllers
             {
                 return NotFound();
             }
+
+            var populatedMembers = new PopulatedMembers();
+            populatedMembers.Conductor = _memberService.Get(sacramentMeeting.Conductor);
+            populatedMembers.OpeningPrayer = _memberService.Get(sacramentMeeting.OpeningPrayer);
+            populatedMembers.ClosingPrayer = _memberService.Get(sacramentMeeting.ClosingPrayer);
+
+            ViewData["populatedMembers"] = populatedMembers;
 
             return View(sacramentMeeting);
         }

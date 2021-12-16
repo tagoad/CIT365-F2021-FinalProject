@@ -19,16 +19,17 @@ namespace SacramentPlanner.Models
         public DateTime MeetingDate { get; set; }
 
         [Required]
-        public Member Conductor { get; set; }
+        public string Conductor { get; set; }
 
         [Required]
         [Display(Name = "Opening Prayer")]
-        public Member OpeningPrayer { get; set; }
+        public string OpeningPrayer { get; set; }
         [Required]
         [Display(Name = "Closing Prayer")]
-        public Member ClosingPrayer { get; set; }
+        public string ClosingPrayer { get; set; }
 
-        public ICollection<Speaker> Speakers { get; set; }
+        // Tuple<MemberId, Topic>
+        public ICollection<Tuple<string, string>> Speakers { get; set; }
 
         [Required]
         [Display(Name = "Opening Hymn")]

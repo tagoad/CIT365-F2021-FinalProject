@@ -4,6 +4,10 @@
     ViewData["Title"] = "Edit";
 }
 
+@{
+    var members = (List<Member>)ViewData["members"];
+}
+
 <h1>Edit</h1>
 
 <h4>SacramentMeeting</h4>
@@ -17,6 +21,39 @@
                 <label asp-for="MeetingDate" class="control-label"></label>
                 <input asp-for="MeetingDate" class="form-control" />
                 <span asp-validation-for="MeetingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Conductor" class="control-label"></label>
+                <select asp-for="Conductor">
+                    <option value="">Select Person</option>
+                    @foreach (var member in members)
+                    {
+                        <option value="@member.Id">@member.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="Conductor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningPrayer" class="control-label"></label>
+                <select asp-for="OpeningPrayer">
+                    <option value="">Select Person</option>
+                    @foreach (var member in members)
+                    {
+                        <option value="@member.Id">@member.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="OpeningPrayer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingPrayer" class="control-label"></label>
+                <select asp-for="ClosingPrayer">
+                    <option value="">Select Person</option>
+                    @foreach (var member in members)
+                    {
+                        <option value="@member.Id">@member.FullName</option>
+                    }
+                </select>
+                <span asp-validation-for="ClosingPrayer" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OpeningHymn" class="control-label"></label>

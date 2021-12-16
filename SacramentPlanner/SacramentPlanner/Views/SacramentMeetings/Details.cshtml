@@ -4,46 +4,68 @@
     ViewData["Title"] = "Details";
 }
 
+@{
+    var populatedMembers = (PopulatedMembers)ViewData["populatedMembers"];
+}
+
 <h1>Details</h1>
 
 <div>
     <h4>SacramentMeeting</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MeetingDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MeetingDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-10">
+            Conducting
+        </dt>
+        <dd class="col-sm-2">
+            @populatedMembers.Conductor.FullName
+        </dd>
+        <dt class="col-sm-10">
+            Opening Prayer
+        </dt>
+        <dd class="col-sm-2">
+            @populatedMembers.OpeningPrayer.FullName
+        </dd>
+        <dt class="col-sm-10">
+            Closing Prayer
+        </dt>
+        <dd class="col-sm-2">
+            @populatedMembers.ClosingPrayer.FullName
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OpeningHymn)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.OpeningHymn)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SacramentHymn)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SacramentHymn)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IntermediateHymn)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IntermediateHymn)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ClosingHymn)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ClosingHymn)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Notes)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Notes)
         </dd>
     </dl>
