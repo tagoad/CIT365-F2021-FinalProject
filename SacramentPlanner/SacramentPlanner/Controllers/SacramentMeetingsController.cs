@@ -145,7 +145,7 @@ namespace SacramentPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,MeetingDate,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes")] SacramentMeeting sacramentMeeting)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,MeetingDate,Conductor,OpeningPrayer,ClosingPrayer,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes")] SacramentMeeting sacramentMeeting)
         {
             if (id != sacramentMeeting.Id)
             {
@@ -157,6 +157,7 @@ namespace SacramentPlanner.Controllers
                 _meetingService.Update(id, sacramentMeeting);
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["members"] = _memberService.Get();
             return View(sacramentMeeting);
         }
 
