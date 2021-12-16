@@ -7,34 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SacramentPlanner.Data;
 using SacramentPlanner.Models;
+using SacramentPlanner.Services;
 
 namespace SacramentPlanner.Controllers
 {
     public class MembersController : Controller
     {
-        private readonly SacramentPlannerContext _context;
+        private readonly  MemberService _memberService;
 
-        public MembersController(SacramentPlannerContext context)
+        public MembersController(MemberService memberService)
         {
-            _context = context;
+            _memberService = memberService;
         }
 
         // GET: Members
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Member.ToListAsync());
+            return View(_memberService.Get());
         }
 
         // GET: Members/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var member = _memberService.Get(id);
             if (member == null)
             {
                 return NotFound();
@@ -58,22 +58,21 @@ namespace SacramentPlanner.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(member);
-                await _context.SaveChangesAsync();
+                _memberService.Create(member);
                 return RedirectToAction(nameof(Index));
             }
             return View(member);
         }
 
         // GET: Members/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member.FindAsync(id);
+            var member = _memberService.Get(id);
             if (member == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace SacramentPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] Member member)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName")] Member member)
         {
             if (id != member.Id)
             {
@@ -95,37 +94,22 @@ namespace SacramentPlanner.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(member);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MemberExists(member.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _memberService.Update(id, member);
                 return RedirectToAction(nameof(Index));
             }
             return View(member);
         }
 
         // GET: Members/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var member = await _context.Member
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var member = _memberService.Get(id);
+
             if (member == null)
             {
                 return NotFound();
@@ -137,17 +121,27 @@ namespace SacramentPlanner.Controllers
         // POST: Members/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var member = await _context.Member.FindAsync(id);
-            _context.Member.Remove(member);
-            await _context.SaveChangesAsync();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var member = _memberService.Get(id);
+            _memberService.Remove(member);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MemberExists(int id)
+        private bool MemberExists(string id)
         {
-            return _context.Member.Any(e => e.Id == id);
+            if(_memberService.Get(id) != null)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 }
