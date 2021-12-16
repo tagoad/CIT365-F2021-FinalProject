@@ -1,18 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SacramentPlanner.Models;
 using SacramentPlanner.Services;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
-using SacramentPlanner.Data;
 
 
 namespace SacramentPlanner
@@ -40,9 +33,6 @@ namespace SacramentPlanner
             services.AddSingleton<MemberService>();
 
             services.AddControllersWithViews();
-
-            services.AddDbContext<SacramentPlannerContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SacramentPlannerContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

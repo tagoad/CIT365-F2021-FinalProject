@@ -11,7 +11,7 @@ namespace SacramentPlanner.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [BsonElement("Date")]
@@ -22,10 +22,10 @@ namespace SacramentPlanner.Models
         public Member Conductor { get; set; }
 
         [Required]
-        [Display(Name = "Opening Hymn")]
+        [Display(Name = "Opening Prayer")]
         public Member OpeningPrayer { get; set; }
         [Required]
-        [Display(Name = "Closing Hymn")]
+        [Display(Name = "Closing Prayer")]
         public Member ClosingPrayer { get; set; }
 
         public ICollection<Speaker> Speakers { get; set; }

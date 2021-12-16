@@ -5,60 +5,65 @@ using SacramentPlanner.Services;
 
 namespace SacramentPlanner.Controllers
 {
-    public class MembersController : Controller
+    public class SacramentMeetingsController : Controller
     {
-        private readonly  MemberService _memberService;
+        private readonly MeetingService _meetingService;
+        private readonly MemberService _memberService;
 
-        public MembersController(MemberService memberService)
+        public SacramentMeetingsController(MeetingService meetingService, MemberService memberService)
         {
+            _meetingService = meetingService;
             _memberService = memberService;
         }
 
-        // GET: Members
+        // GET: SacramentMeetings
         public async Task<IActionResult> Index()
         {
-            return View(_memberService.Get());
+            return View(_meetingService.Get());
         }
 
-        // GET: Members/Details/5
+        // GET: SacramentMeetings/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var member = _memberService.Get(id);
-            if (member == null)
+            var sacramentMeeting = _meetingService.Get(id);
+
+            if (sacramentMeeting == null)
             {
                 return NotFound();
             }
 
-            return View(member);
+            return View(sacramentMeeting);
         }
 
-        // GET: Members/Create
+        // GET: SacramentMeetings/Create
         public IActionResult Create()
         {
+            ViewData["members"] = _memberService.Get();
             return View();
         }
 
-        // POST: Members/Create
+        // POST: SacramentMeetings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Member member)
+        public async Task<IActionResult> Create([Bind("Id,MeetingDate,ConductorId,OpeningPrayerId,ClosingPrayerId,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes")] SacramentMeeting sacramentMeeting)
         {
             if (ModelState.IsValid)
             {
-                _memberService.Create(member);
+                _meetingService.Create(sacramentMeeting);
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            ViewData["members"] = _memberService.Get();
+            return View(sacramentMeeting);
         }
 
-        // GET: Members/Edit/5
+        // GET: SacramentMeetings/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -66,35 +71,35 @@ namespace SacramentPlanner.Controllers
                 return NotFound();
             }
 
-            var member = _memberService.Get(id);
-            if (member == null)
+            var sacramentMeeting = _meetingService.Get(id);
+            if (sacramentMeeting == null)
             {
                 return NotFound();
             }
-            return View(member);
+            return View(sacramentMeeting);
         }
 
-        // POST: Members/Edit/5
+        // POST: SacramentMeetings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,FirstName,LastName")] Member member)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,MeetingDate,OpeningHymn,SacramentHymn,IntermediateHymn,ClosingHymn,Notes")] SacramentMeeting sacramentMeeting)
         {
-            if (id != member.Id)
+            if (id != sacramentMeeting.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _memberService.Update(id, member);
+                _meetingService.Update(id, sacramentMeeting);
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            return View(sacramentMeeting);
         }
 
-        // GET: Members/Delete/5
+        // GET: SacramentMeetings/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -102,36 +107,31 @@ namespace SacramentPlanner.Controllers
                 return NotFound();
             }
 
-            var member = _memberService.Get(id);
-
-            if (member == null)
+            var sacramentMeeting = _meetingService.Get(id);
+            if (sacramentMeeting == null)
             {
                 return NotFound();
             }
 
-            return View(member);
+            return View(sacramentMeeting);
         }
 
-        // POST: Members/Delete/5
+        // POST: SacramentMeetings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            _memberService.Remove(id);
+            _meetingService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MemberExists(string id)
+        private bool SacramentMeetingExists(string id)
         {
-            if(_memberService.Get(id) != null)
+            if (_meetingService.Get(id) != null)
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
